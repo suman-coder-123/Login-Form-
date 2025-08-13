@@ -4,7 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 
 
@@ -27,12 +28,16 @@ const schema = z.object({
   education: z.string().min(1, "please select your education"),
   gender: z.string().min(1, "please select your gender"),
   course: z.string().min(1, "please select your course"),
+
 });
 
 export default function PhotoUploadForm() {
   const [photo, setPhoto] = useState(null);
     const [Show , SetShow] = useState(false);
     const [Password , SetPassword] = useState("");
+    const [confirmPassword , SetconfirmPassword] = useState("");
+    const [phone, setPhone] = useState("");
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -95,18 +100,27 @@ export default function PhotoUploadForm() {
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>
+          <div>
+            <label className="block text-gray-700 font-medium">Phone no.</label>
+            <PhoneInput
+              country={"in"} 
+              value={phone}
+              onChange={setPhone}
+               />
+              {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="relative w-full items-center">
               <label className="block text-gray-700 font-medium">Password</label>
               <input
                 {...register("password")}
-                type= {Show? "text":"password"}
+                type= {Show? "text":"Password"}
                 value ={Password}
                  onChange={(e) => SetPassword (e.target.value)} 
                 placeholder="Enter password"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
               />
-             <button onClick={() => SetShow((s) => !s)} className="absolute inset-y-0 mt-7 py-2 right-3 flex items-center text-gray-500">
+             <button onClick={() => SetShow((s) => !s)} className="absolute inset-y-0 py-2 right-3 flex items-center text-gray-500">
             {Show? <FaEyeSlash /> : <FaEye />}
         </button>
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
@@ -115,9 +129,9 @@ export default function PhotoUploadForm() {
               <label className="block text-gray-700 font-medium">Confirm Password</label>
               <input
                 {...register("confirmPassword")}
-                type= {Show? "text":"password"}
-                value ={Password}
-                 onChange={(e) => SetPassword (e.target.value)} 
+                type= {Show? "text":"confirmPassword"}
+                value ={confirmPassword}
+                 onChange={(e) => SetconfirmPassword (e.target.value)} 
                 placeholder="Confirm password"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 mt-1 focus:ring-2 focus:ring-blue-500 outline-none"
               />
